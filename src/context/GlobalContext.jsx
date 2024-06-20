@@ -81,7 +81,7 @@ function GlobalContextProvider({ children }) {
     () => {
       //? useEfect, primera sección
       const fotosFiltradas = fotos.filter((foto) => {
-        const filtroPorTag = !state.tag || foto.tagId === tag;
+        const filtroPorTag = !state.tag || foto.tagId === state.tag;
 
         //? useEfect, segunda sección
         return filtroPorTag;
