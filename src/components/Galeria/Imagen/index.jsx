@@ -1,5 +1,13 @@
+//*React
 import { styled } from "styled-components";
+import { useContext } from "react";
+
+//*Context
+import { GlobalContext } from "../../../context/GlobalContext";
+
+//*Componentes
 import BotonIcono from "../BotonIcono";
+import useFotoModal from "../../../hooks/useFotoModal";
 
 const Figure = styled.figure`
   width: ${(props) => (props.$expandida ? "90%" : "370px")};
@@ -37,19 +45,15 @@ const Pie = styled.footer`
   align-items: center;
 `;
 
-const Imagen = (props) => {
-  const {
-    foto,
-    expandida = false,
-    alSolicitarZoom,
-    alAlternarFavorito,
-  } = props;
+const Imagen = ({ foto, expandida = false }) => {
+  const { photoSelect, openStateModal, openModal, closeModal } = useFotoModal();
+
+  const { dispatch } = useContext(GlobalContext);
 
   // const iconoFavorito = foto.favorita ? "/iconos/favorito-activo.png" : "/iconos/favorito.png";
-  let iconoFavorito = "/iconos/favorito.png";
-  if (foto.favorita) {
-    iconoFavorito = "/iconos/favorito-activo.png";
-  }
+  const iconoFavorito = foto.favorita
+    ? "/iconos/favorito-activo.png"
+    : "/iconos/favorito.png";
 
   return (
     <Figure $expandida={expandida} id={`foto-${foto.id}`}>
@@ -59,17 +63,14 @@ const Imagen = (props) => {
         <Pie>
           <h4>{foto.fuente}</h4>
           <BotonIcono
-            onClick={() => {
-              alAlternarFavorito(foto);
-            }}
+            onClick={() =>
+              dispatch({ type: "ALTERNAR_FAVORITO", payload: foto })
+            }
           >
             <img src={iconoFavorito} alt="Icone de favorito" />
           </BotonIcono>
           {!expandida && (
-            <BotonIcono
-              aria-hidden={expandida}
-              onClick={() => alSolicitarZoom(foto)}
-            >
+            <BotonIcono aria-hidden={expandida} onClick={() => openModal(foto)}>
               <img src="/iconos/expandir.png" alt="Icono de expandir" />
             </BotonIcono>
           )}

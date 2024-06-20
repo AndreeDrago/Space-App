@@ -1,5 +1,11 @@
 //*react
 import styled from "styled-components";
+import { useContext } from "react";
+
+//*Context
+import { GlobalContext } from "../../context/GlobalContext";
+
+//*Componentes
 import CampoTexto from "../CampoTexto";
 
 const HeaderStyle = styled.header`
@@ -12,13 +18,11 @@ const LogoStyle = styled.img`
   width: 212px;
 `;
 
-const Cabecera = (props) => {
-  const { filtro, setFiltro } = props;
-
+const Cabecera = () => {
   return (
     <HeaderStyle>
       <LogoStyle src="imagenes/logo.png" alt="Logo de app" />
-      <CampoTexto setFiltro={setFiltro} />
+      <CampoTexto />
     </HeaderStyle>
   );
 };

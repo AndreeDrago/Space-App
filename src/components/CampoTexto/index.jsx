@@ -1,5 +1,7 @@
 //*react
+import { useContext, useRef } from "react";
 import styled from "styled-components";
+import { GlobalContext } from "../../context/GlobalContext";
 
 const CampoContainer = styled.div`
   position: relative;
@@ -27,19 +29,27 @@ const IconoLupa = styled.img`
   right: 10px;
   height: 38px;
   width: 38px;
+  cursor: pointer;
 `;
 
-const CampoTexto = ({ setFiltro }) => {
+const CampoTexto = () => {
+  const cajaConsulta = useRef(null);
+  const { dispatch } = useContext(GlobalContext);
+
   return (
     <CampoContainer>
       <CampoStyle
-        onChange={(evento) => {
-          setFiltro(evento.target.value);
-        }}
+        ref={cajaConsulta}
         type="text"
         placeholder="¿Qué estás buscando?"
       />
-      <IconoLupa src="iconos/search.png" alt="ícono de lupa" />
+      <IconoLupa
+        src="iconos/search.png"
+        alt="ícono de lupa"
+        onClick={() => {
+          dispatch({ type: "SET_FILTRO", payload: cajaConsulta.current.value });
+        }}
+      />
     </CampoContainer>
   );
 };
